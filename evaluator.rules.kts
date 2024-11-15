@@ -1526,20 +1526,20 @@ fun RuleSet.vulnerabilityInDependencyRule() = packageRule("VULNERABILITY_IN_DEPE
 }
 
 fun RuleSet.vulnerabilityWithHighSeverityInDependencyRule() = packageRule("HIGH_SEVERITY_VULNERABILITY_IN_DEPENDENCY") {
-    val maxAcceptedSeverity = "5.0"
-    val scoringSystem = "CVSS2"
+    val scoreThreshold = 5.0f
 
     require {
         -isProject()
         -isExcluded()
-        +hasVulnerability(maxAcceptedSeverity, scoringSystem) { value, threshold ->
-            value.toFloat() >= threshold.toFloat()
-        }
+        +AnyOf(
+            hasVulnerability(scoreThreshold, "CVSS2"),
+            hasVulnerability(scoreThreshold, "CVSS3")
+        )
     }
 
     error(
-        "The package '${pkg.metadata.id.toCoordinates()}' has a vulnerability with $scoringSystem severity > " +
-                "$maxAcceptedSeverity.",
+        "The package '${pkg.metadata.id.toCoordinates()}' has a vulnerability score greater than or equal to " +
+            "$scoreThreshold.",
         howToFixDefault()
     )
 }
