@@ -1,0 +1,29 @@
+ort:
+  advisor:
+    skipExcluded: true
+  scanner:
+    skipExcluded: true
+    archive:
+      enabled: true
+      fileStorage:
+        localFileStorage:
+          directory: /home/runner/.ort/scanner/archive
+          compression: false
+    fileListStorage:
+      fileStorage:
+        localFileStorage:
+          directory: /home/runner/.ort/scanner/file-lists
+          compression: false
+    storages:
+      local:
+        backend:
+          localFileStorage:
+            directory: /home/runner/.ort/scanner/results
+            compression: false
+    storageReaders: [local]
+    storageWriters: [local]
+    provenanceStorage:
+      fileStorage:
+        localFileStorage:
+          directory: /home/runner/.ort/scanner/provenance
+          compression: false
